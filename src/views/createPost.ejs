@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Post</title>
+  <style>
+    .content-section {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    .content-section h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Create a New Post</h1>
+
+  <form id="createPostForm" enctype="multipart/form-data" method="post" action="/api/posts/create">
+    <h2>Create Post</h2>
+
+    <!-- Main Post Section -->
+    <label for="postHeading">Post Heading</label>
+    <input type="text" id="postHeading" name="postHeading" required><br><br>
+
+    <label for="category">Category</label>
+    <select id="category" name="category" required>
+      <option value="">Select a Category</option>
+      <option value="technology">Technology</option>
+      <option value="lifestyle">Lifestyle</option>
+    </select><br><br>
+
+    <label for="subheading">Subheading</label>
+    <input type="text" id="subheading" name="subheading"><br><br>
+
+    <label for="imagePost">Image Post</label>
+    <input type="file" id="imagePost" name="imagePost"><br><br>
+
+    <label for="createdBy">Created By</label>
+    <input type="text" id="createdBy" name="createdBy" required><br><br>
+
+    <label for="designation">Designation</label>
+    <input type="text" id="designation" name="designation" required><br><br>
+
+    <label for="description">Post Description</label>
+    <textarea id="description" name="description" rows="4" required></textarea><br><br>
+
+    <!-- Dynamic Content Section -->
+    <h3>Content Section</h3>
+    <div id="contentSections">
+      <!-- Initial Content Section -->
+      <div class="content-section" id="contentSection1">
+        <label for="contentHeading1">Content Heading</label>
+        <input type="text" id="contentHeading1" name="contentHeading[]"><br><br>
+
+        <label for="contentDescription1">Content Description</label>
+        <textarea id="contentDescription1" name="contentDescription[]"></textarea><br><br>
+
+        <label for="contentType1">Content Type</label>
+        <select id="contentType1" name="contentType[]" onchange="toggleContentTypeFields(this)">
+          <option value="">Select Content Type</option>
+          <option value="image">Image</option>
+          <option value="list">List</option>
+          <option value="quote">Quote</option>
+        </select><br><br>
+
+        <div class="image-option" id="imageOption1" style="display:none;">
+          <label for="imageUpload1">Upload Image</label>
+          <input type="file" id="imageUpload1" name="imageUpload"><br><br>
+        </div>
+
+        <div class="list-option" id="listOption1" style="display:none;">
+          <label>List Items</label>
+          <div id="listItems1">
+            <input type="text" name="listItems[0][]" placeholder="Enter List Item"><br><br>
+          </div>
+          <button type="button" onclick="addListItem(1)">Add More List Items</button><br><br>
+        </div>
+
+        <div class="quote-option" id="quoteOption1" style="display:none;">
+          <label for="quoteText1">Quote</label>
+          <input type="text" id="quoteText1" name="quoteText[]"><br><br>
+
+          <label for="quoteAuthor1">Created By</label>
+          <input type="text" id="quoteAuthor1" name="quoteAuthor[]"><br><br>
+        </div>
+
+        <button type="button" onclick="removeContentSection(1)">Remove Content Section</button><br><br>
+      </div>
+    </div>
+
+    <button type="button" onclick="addContentSection()">Add New Content Section</button><br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    let contentSectionCount = 1;
+
+    function toggleContentTypeFields(selectElement) {
+      const contentSection = selectElement.closest('.content-section');
+      const imageOption = contentSection.querySelector('.image-option');
+      const listOption = contentSection.querySelector('.list-option');
+      const quoteOption = contentSection.querySelector('.quote-option');
+
+      // Hide all options
+      imageOption.style.display = 'none';
+      listOption.style.display = 'none';
+      quoteOption.style.display = 'none';
+
+      // Show selected option
+      if (selectElement.value === 'image') {
+        imageOption.style.display = 'block';
+      } else if (selectElement.value === 'list') {
+        listOption.style.display = 'block';
+      } else if (selectElement.value === 'quote') {
+        quoteOption.style.display = 'block';
+      }
+    }
+
+    function addContentSection() {
+      contentSectionCount++;
+      const newSection = document.createElement('div');
+      newSection.classList.add('content-section');
+      newSection.id = `contentSection${contentSectionCount}`;
+      newSection.innerHTML = `
+        <label for="contentHeading${contentSectionCount}">Content Heading</label>
+        <input type="text" id="contentHeading${contentSectionCount}" name="contentHeading[]"><br><br>
+
+        <label for="contentDescription${contentSectionCount}">Content Description</label>
+        <textarea id="contentDescription${contentSectionCount}" name="contentDescription[]"></textarea><br><br>
+
+        <label for="contentType${contentSectionCount}">Content Type</label>
+        <select id="contentType${contentSectionCount}" name="contentType[]" onchange="toggleContentTypeFields(this)">
+          <option value="">Select Content Type</option>
+          <option value="image">Image</option>
+          <option value="list">List</option>
+          <option value="quote">Quote</option>
+        </select><br><br>
+
+        <div class="image-option" id="imageOption${contentSectionCount}" style="display:none;">
+          <label for="imageUpload${contentSectionCount}">Upload Image</label>
+          <input type="file" id="imageUpload${contentSectionCount}" name="imageUpload"><br><br>
+        </div>
+
+        <div class="list-option" id="listOption${contentSectionCount}" style="display:none;">
+          <label>List Items</label>
+          <div id="listItems${contentSectionCount}">
+            <input type="text" name="listItems[${contentSectionCount - 1}][]" placeholder="Enter List Item"><br><br>
+          </div>
+          <button type="button" onclick="addListItem(${contentSectionCount})">Add More List Items</button><br><br>
+        </div>
+
+        <div class="quote-option" id="quoteOption${contentSectionCount}" style="display:none;">
+          <label for="quoteText${contentSectionCount}">Quote</label>
+          <input type="text" id="quoteText${contentSectionCount}" name="quoteText[]"><br><br>
+
+          <label for="quoteAuthor${contentSectionCount}">Created By</label>
+          <input type="text" id="quoteAuthor${contentSectionCount}" name="quoteAuthor[]"><br><br>
+        </div>
+
+        <button type="button" onclick="removeContentSection(${contentSectionCount})">Remove Content Section</button><br><br>
+      `;
+      document.getElementById('contentSections').appendChild(newSection);
+    }
+
+    function removeContentSection(sectionId) {
+      const section = document.getElementById(`contentSection${sectionId}`);
+      if (section) section.remove();
+    }
+
+    function addListItem(sectionId) {
+      const listItems = document.getElementById(`listItems${sectionId}`);
+      const newItem = document.createElement('input');
+      newItem.type = 'text';
+      newItem.name = `listItems[${sectionId - 1}][]`;
+      newItem.placeholder = 'Enter List Item';
+      listItems.appendChild(newItem);
+      listItems.appendChild(document.createElement('br'));
+      listItems.appendChild(document.createElement('br'));
+    }
+  </script>
+</body>
+</html>

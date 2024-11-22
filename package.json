@@ -1,0 +1,24 @@
+{
+     "name": "Digest",
+     "version": "1.0.0",
+     "description": "Node.js backend for user registration with MongoDB Atlas",
+     "main": "src/server.js",
+     "scripts": {
+          "start": "node src/server.js"
+     },
+     "dependencies": {
+          "bcryptjs": "^2.4.3",
+          "body-parser": "^1.20.3",
+          "cors": "^2.8.5",
+          "dotenv": "^10.0.0",
+          "ejs": "^3.1.10",
+          "express": "^4.21.1",
+          "fs": "^0.0.1-security",
+          "mongoose": "^5.13.22",
+          "multer": "^1.4.5-lts.1",
+          "path": "^0.12.7",
+          "uuid": "^11.0.3"
+     },
+     "author": "",
+     "license": "ISC"
+}

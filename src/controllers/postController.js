@@ -47,3 +47,41 @@ exports.createPost = async (req, res) => {
     res.status(500).json({ message: 'Server Error', error: err.message });
   }
 };
+
+// Fetch all posts
+exports.getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find(); // Fetch all posts
+    res.status(200).json({
+      message: 'Posts retrieved successfully',
+      data: posts,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error',
+      error: err.message,
+    });
+  }
+};
+
+// Fetch post by ID
+exports.getPostById = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId); // Find post by ID
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.status(200).json({
+      message: 'Post retrieved successfully',
+      data: post,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error',
+      error: err.message,
+    });
+  }
+};

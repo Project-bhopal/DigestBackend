@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { createPost } = require('../controllers/postController');
+const postController = require('../controllers/postController');
 
 const router = express.Router();
 
@@ -24,5 +25,10 @@ router.post(
   ]),
   createPost
 );
+
+router.get('/allpost', postController.getAllPosts);
+
+// Fetch a particular post by ID
+router.get('/allpost/:id', postController.getPostById);
 
 module.exports = router;

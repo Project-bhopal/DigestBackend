@@ -25,7 +25,18 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  credentials: true // Allow cookies if needed
+}));
 
+app.use(express.json());
+
+// Your routes here
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'Hello from the backend!' });
+});
 
 connectDB(); // Connect to MongoDB
 
@@ -34,6 +45,7 @@ connectDB(); // Connect to MongoDB
 app.get('/', (req, res) => {
   res.render('createPost'); // Will render the createPost.ejs file
 });
+
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
    

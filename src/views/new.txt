@@ -13,12 +13,6 @@
     .content-section h3 {
       margin-top: 0;
     }
-    .sponsored-section {
-      display: none;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      padding: 10px;
-    }
   </style>
 </head>
 <body>
@@ -35,10 +29,11 @@
     <select id="category" name="category" required>
       <option value="">Select a Category</option>
       <option value="marketing">Marketing</option>
-      <option value="advertising">Advertising</option>
-      <option value="market trends">Market Trends</option>
-      <option value="tech moves">Tech Moves</option>
-      <option value="startups">Startups</option>
+                <option value="advertising">Advertising</option>
+                <option value="market trends">Market Trends</option>
+                <option value="tech moves">Tech Moves</option>
+                <option value="startups">Startups</option>
+
     </select><br><br>
 
     <label for="subheading">Subheading</label>
@@ -55,25 +50,6 @@
 
     <label for="description">Post Description</label>
     <textarea id="description" name="description" rows="4" required></textarea><br><br>
-
-    <!-- Sponsored Section -->
-    <label for="isSponsored">Is Sponsored?</label>
-    <select id="isSponsored" name="isSponsored" onchange="toggleSponsoredSection()">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
-    </select><br><br>
-
-    <div id="sponsoredSection" class="sponsored-section">
-      <h3>Sponsored Details</h3>
-      <label for="sponsoredBy">Sponsored By</label>
-      <input type="text" id="sponsoredBy" name="sponsoredBy"><br><br>
-
-      <label for="companyName">Company Name</label>
-      <input type="text" id="companyName" name="companyName"><br><br>
-
-      <label for="companyLogo">Company Logo</label>
-      <input type="file" id="companyLogo" name="companyLogo"><br><br>
-    </div>
 
     <!-- Dynamic Content Section -->
     <h3>Content Section</h3>
@@ -126,12 +102,6 @@
   <script>
     let contentSectionCount = 1;
 
-    function toggleSponsoredSection() {
-      const isSponsored = document.getElementById('isSponsored').value;
-      const sponsoredSection = document.getElementById('sponsoredSection');
-      sponsoredSection.style.display = isSponsored === 'true' ? 'block' : 'none';
-    }
-
     function toggleContentTypeFields(selectElement) {
       const contentSection = selectElement.closest('.content-section');
       const imageOption = contentSection.querySelector('.image-option');
@@ -159,7 +129,6 @@
       newSection.classList.add('content-section');
       newSection.id = `contentSection${contentSectionCount}`;
       newSection.innerHTML = `
-        <!-- Dynamic content code -->
         <label for="contentHeading${contentSectionCount}">Content Heading</label>
         <input type="text" id="contentHeading${contentSectionCount}" name="contentHeading[]"><br><br>
 
@@ -218,3 +187,163 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Post = require('../models/Post');
+
+exports.createPost = async (req, res) => {
+  try {
+    const { 
+      postHeading, category, subheading, createdBy, designation, description, 
+      contentHeading, contentDescription, contentType, quoteText, quoteAuthor, 
+      listItems 
+    } = req.body;
+
+    // Map content sections
+    const contentSections = (contentHeading || []).map((heading, index) => ({
+      contentHeading: heading,
+      contentDescription: contentDescription[index] || null,
+      contentType: contentType[index] || null,
+      listItems: listItems && listItems[index] ? listItems[index] : [],
+      quoteText: quoteText[index] || null,
+      quoteAuthor: quoteAuthor[index] || null,
+      imageUpload: req.files[`imageUpload`]?.[index]?.path || null,
+    }));
+
+    // Create a new post
+    const newPost = new Post({
+      postHeading,
+      category,
+      subheading,
+      imagePost: req.files['imagePost']?.[0]?.path || null,
+      createdBy,
+      designation,
+      description,
+      contentSections,
+    });
+
+    // Save to DB
+    const savedPost = await newPost.save();
+
+    // Print to terminal
+    console.log('Saved Post:', savedPost);
+
+    // Send response
+    res.status(201).json({
+      message: 'Post created successfully',
+      data: savedPost,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+};
+
+// Fetch all posts
+exports.getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find(); // Fetch all posts
+    res.status(200).json({
+      message: 'Posts retrieved successfully',
+      data: posts,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error',
+      error: err.message,
+    });
+  }
+};
+
+// Fetch post by ID
+exports.getPostById = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId); // Find post by ID
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.status(200).json({
+      message: 'Post retrieved successfully',
+      data: post,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error',
+      error: err.message,
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const express = require('express');
+const multer = require('multer');
+const { createPost } = require('../controllers/postController');
+const postController = require('../controllers/postController');
+
+const router = express.Router();
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
+router.post(
+  '/create',
+  upload.fields([
+    { name: 'imagePost', maxCount: 1 },
+    { name: 'imageUpload', maxCount: 10 },
+  ]),
+  createPost
+);
+
+router.get('/allpost', postController.getAllPosts);
+
+// Fetch a particular post by ID
+router.get('/allpost/:id', postController.getPostById);
+
+module.exports = router;

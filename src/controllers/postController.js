@@ -2,10 +2,22 @@ const Post = require('../models/Post');
 
 exports.createPost = async (req, res) => {
   try {
-    const { 
-      postHeading, category, subheading, createdBy, designation, description, 
-      contentHeading, contentDescription, contentType, quoteText, quoteAuthor, 
-      listItems 
+    const {
+      postHeading,
+      category,
+      subheading,
+      createdBy,
+      designation,
+      description,
+      contentHeading,
+      contentDescription,
+      contentType,
+      quoteText,
+      quoteAuthor,
+      listItems,
+      isSponsored,
+      sponsoredBy,
+      companyName,
     } = req.body;
 
     // Map content sections
@@ -29,15 +41,15 @@ exports.createPost = async (req, res) => {
       designation,
       description,
       contentSections,
+      isSponsored: isSponsored == 'true', // Convert string to boolean
+      sponsoredBy: isSponsored == 'true' ? sponsoredBy : null,
+      companyName: isSponsored == 'true' ? companyName : null,
+      companyLogo: req.files['companyLogo']?.[0]?.path || null,
     });
 
     // Save to DB
     const savedPost = await newPost.save();
 
-    // Print to terminal
-    console.log('Saved Post:', savedPost);
-
-    // Send response
     res.status(201).json({
       message: 'Post created successfully',
       data: savedPost,
@@ -48,10 +60,9 @@ exports.createPost = async (req, res) => {
   }
 };
 
-// Fetch all posts
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find(); // Fetch all posts
+    const posts = await Post.find().sort({ createdAt: -1 }); // Fetch all posts in descending order of creation
     res.status(200).json({
       message: 'Posts retrieved successfully',
       data: posts,
@@ -65,17 +76,40 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-// Fetch post by ID
 exports.getPostById = async (req, res) => {
   try {
     const postId = req.params.id;
-    const post = await Post.findById(postId); // Find post by ID
+    const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
     res.status(200).json({
       message: 'Post retrieved successfully',
       data: post,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error',
+      error: err.message,
+    });
+  }
+};
+
+// Update post
+exports.updatePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const updatedPost = await Post.findByIdAndUpdate(postId, req.body, {
+      new: true, // Return the updated document
+      runValidators: true, // Ensure validation rules are applied
+    });
+    if (!updatedPost) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.status(200).json({
+      message: 'Post updated successfully',
+      data: updatedPost,
     });
   } catch (err) {
     console.error(err);

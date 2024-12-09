@@ -1,6 +1,5 @@
 const express = require('express');
 const multer = require('multer');
-const { createPost } = require('../controllers/postController');
 const postController = require('../controllers/postController');
 
 const router = express.Router();
@@ -22,13 +21,21 @@ router.post(
   upload.fields([
     { name: 'imagePost', maxCount: 1 },
     { name: 'imageUpload', maxCount: 10 },
+    { name: 'companyLogo', maxCount: 1 }, // For sponsored company logo
   ]),
-  createPost
+  postController.createPost
 );
 
 router.get('/allpost', postController.getAllPosts);
-
-// Fetch a particular post by ID
 router.get('/allpost/:id', postController.getPostById);
+router.put(
+  '/update/:id',
+  upload.fields([
+    { name: 'imagePost', maxCount: 1 },
+    { name: 'imageUpload', maxCount: 10 },
+    { name: 'companyLogo', maxCount: 1 },
+  ]),
+  postController.updatePost
+);
 
 module.exports = router;

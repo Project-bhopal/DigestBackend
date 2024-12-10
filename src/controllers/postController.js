@@ -28,7 +28,10 @@ exports.createPost = async (req, res) => {
       listItems: listItems && listItems[index] ? listItems[index] : [],
       quoteText: quoteText[index] || null,
       quoteAuthor: quoteAuthor[index] || null,
-      imageUpload: req.files[`imageUpload`]?.[index]?.path || null,
+      // imageUpload: req.files[`imageUpload`]?.[index]?.path || null,
+      imageUpload: req.files[`imageUpload`]?.[index]?.path 
+                  ? `https://api.startupdigest.in/${req.files[`imageUpload`][index].path}` 
+                  : null,
     }));
 
     // Create a new post
@@ -36,7 +39,10 @@ exports.createPost = async (req, res) => {
       postHeading,
       category,
       subheading,
-      imagePost: req.files['imagePost']?.[0]?.path || null,
+      // imagePost: `https://api.startupdigest.in/${req.files['imagePost']?.[0]?.path || null}`,
+      imagePost: req.files['imagePost']?.[0]?.path 
+                ? `https://api.startupdigest.in/${req.files['imagePost'][0].path}` 
+                : null,
       createdBy,
       designation,
       description,
@@ -44,7 +50,10 @@ exports.createPost = async (req, res) => {
       isSponsored: isSponsored == 'true', // Convert string to boolean
       sponsoredBy: isSponsored == 'true' ? sponsoredBy : null,
       companyName: isSponsored == 'true' ? companyName : null,
-      companyLogo: req.files['companyLogo']?.[0]?.path || null,
+      // companyLogo: req.files['companyLogo']?.[0]?.path || null,
+      companyLogo: req.files['companyLogo']?.[0]?.path 
+                  ? `https://api.startupdigest.in/${req.files['companyLogo'][0].path}` 
+                  : null,
     });
 
     // Save to DB

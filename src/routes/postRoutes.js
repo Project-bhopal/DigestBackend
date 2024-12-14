@@ -20,7 +20,7 @@ router.post(
   '/create',
   upload.fields([
     { name: 'imagePost', maxCount: 1 },
-    { name: 'imageUpload', maxCount: 10 },
+    { name: 'imageUpload', maxCount: 1 },
     { name: 'companyLogo', maxCount: 1 }, // For sponsored company logo
   ]),
   postController.createPost // Ensure the controller uses the full path for image URLs

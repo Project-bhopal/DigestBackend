@@ -12,14 +12,12 @@ dotenv.config();  // Load environment variables
 // Initialize Express
 const app = express();
 
-// Set up static files (for serving images from the uploads folder)
-
-
-// Middleware
-// app.use(express.json()); // Parse JSON bodies
-// app.use(cors());          // Enable CORS (optional, but useful for testing)
 app.use(bodyParser.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
+// In your app.js or server.js
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Set the view engine to EJS
 app.set('view engine', 'ejs');

@@ -27,13 +27,28 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// Middleware to dynamically handle fields
+const dynamicUpload = (req, res, next) => {
+  const fields = [
+    { name: 'imagePost', maxCount: 1 },
+  ];
+
+  // Add dynamic imageUpload fields
+  for (let i = 1; i <= 50; i++) {
+    fields.push({ name: `imageUpload${i}`, maxCount: 50 });
+  }
+
+  // Conditionally add companyLogo field
+  if (req.body.isSponsored === 'true') {
+    fields.push({ name: 'companyLogo', maxCount: 1 });
+  }
+
+  upload.fields(fields)(req, res, next);
+};
+
 router.post(
   '/create',
-  upload.fields([
-    { name: 'imagePost', maxCount: 1 },
-    { name: 'imageUpload', maxCount: 1 },
-    { name: 'companyLogo', maxCount: 1 }, // For sponsored company logo
-  ]),
+  dynamicUpload,
   postController.createPost // Ensure the controller uses the full path for image URLs
 );
 

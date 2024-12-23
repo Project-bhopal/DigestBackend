@@ -1,2 +1,15 @@
 2024-12-22T20:13:44.976Z [info]: Received request: POST /api/posts/create
 2024-12-22T20:13:45.690Z [info]: Post created successfully
+2024-12-23T14:39:46.348Z [info]: Received request: GET /
+2024-12-23T14:39:46.645Z [info]: Received request: GET /favicon.ico
+2024-12-23T14:57:23.473Z [info]: Received request: GET /
+2024-12-23T15:02:48.024Z [info]: Received request: POST /api/posts/create
+2024-12-23T15:02:48.152Z [info]: Post created successfully
+2024-12-23T15:13:21.698Z [info]: Received request: GET /
+2024-12-23T15:23:46.267Z [info]: Received request: POST /api/posts/create
+2024-12-23T15:23:46.385Z [info]: Post created successfully
+2024-12-23T15:32:36.780Z [info]: Received request: GET /
+2024-12-23T15:41:19.670Z [info]: Received request: POST /api/posts/create
+2024-12-23T15:41:19.773Z [info]: Post created successfully
+2024-12-23T15:45:25.003Z [info]: Received request: POST /api/posts/create
+2024-12-23T15:45:25.113Z [info]: Post created successfully

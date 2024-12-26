@@ -13,3 +13,21 @@
 2024-12-23T15:41:19.773Z [info]: Post created successfully
 2024-12-23T15:45:25.003Z [info]: Received request: POST /api/posts/create
 2024-12-23T15:45:25.113Z [info]: Post created successfully
+2024-12-26T14:35:12.473Z [info]: Received request: GET /
+2024-12-26T14:35:14.061Z [info]: Received request: GET /favicon.ico
+2024-12-26T15:09:01.740Z [info]: Received request: POST /api/posts/create
+2024-12-26T15:09:03.234Z [info]: Post created successfully
+2024-12-26T15:12:49.712Z [info]: Received request: POST /api/posts/create
+2024-12-26T15:12:49.776Z [info]: Post created successfully
+2024-12-26T15:19:25.065Z [info]: Received request: GET /
+2024-12-26T15:21:55.128Z [info]: Received request: POST /api/posts/create
+2024-12-26T15:21:55.213Z [info]: Post created successfully
+2024-12-26T15:22:53.831Z [info]: Received request: GET /
+2024-12-26T15:36:16.015Z [info]: Received request: POST /api/posts/create
+2024-12-26T15:36:16.080Z [info]: Post created successfully
+2024-12-26T15:36:19.087Z [info]: Received request: GET /
+2024-12-26T15:51:03.635Z [info]: Received request: POST /api/posts/create
+2024-12-26T15:51:03.694Z [info]: Post created successfully
+2024-12-26T15:51:06.826Z [info]: Received request: GET /
+2024-12-26T15:59:25.728Z [info]: Received request: POST /api/posts/create
+2024-12-26T15:59:25.878Z [info]: Post created successfully

@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
-const logger = require('./config/logger');
 const cookieParser = require('cookie-parser');
 
 dotenv.config();  // Load environment variables
@@ -16,10 +15,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use((req, res, next) => {
-  logger.info(`Received request: ${req.method} ${req.url}`);
-  next();
-});
+
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
 // In your app.js or server.js

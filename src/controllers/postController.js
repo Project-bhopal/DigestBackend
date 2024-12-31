@@ -1,6 +1,5 @@
 const Post = require('../models/Post');
 const domain = 'https://api.startupdigest.in'; // The base domain
-const logger = require('../config/logger');
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 }); // Fetch all posts in descending order of creation
@@ -135,10 +134,8 @@ exports.createPost = async (req, res) => {
         })),
       }
     };
-logger.info('Post created successfully', { post: response.data });
     res.status(201).json(response);
   } catch (err) {
-    logger.error('Server Error', { error: err.message });
     console.error(err);
     res.status(500).json({ message: 'Server Error', error: err.message });
   }

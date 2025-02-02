@@ -6,9 +6,10 @@
   <title>Create Post</title>
   <style>
     .content-section {
-      border: 1px solid #ccc;
+      border-radius: 10px;
       padding: 10px;
       margin-bottom: 20px;
+      background-color:#f5f5f5;
     }
     .content-section h3 {
       margin-top: 0;
@@ -22,45 +23,55 @@
   </style>
 </head>
 <body>
-  <h1>Create a New Post</h1>
+  <h1 style="text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Create a New Post</h1>
 
-  <form id="createPostForm" enctype="multipart/form-data" method="post" action="/api/posts/create">
-    <h2>Create Post</h2>
+  <form id="createPostForm" enctype="multipart/form-data" method="post" action="/api/posts/create" style="width: 70%; justify-self: center; border: 1px solid rgb(224, 224, 224); padding: 20px; border-radius: 10px;">
 
     <!-- Main Post Section -->
-    <label for="postHeading">Post Heading</label>
-    <input type="text" id="postHeading" name="postHeading" required><br><br>
+     <div style="display: flex; flex-direction: column;">
+       <label for="postHeading" style="font-size: 18px;">Post Heading</label>
+       <input type="text" id="postHeading" name="postHeading" required style="border: 1px solid black; border-radius: 5px; padding: 8px;"><br><br>
+     </div>
 
-    <label for="category">Category</label>
-    <select id="category" name="category" required>
-      <option value="">Select a Category</option>
-      <option value="marketing">Marketing</option>
-      <option value="advertising">Advertising</option>
-      <option value="market trends">Market Trends</option>
-      <option value="tech moves">Tech Moves</option>
-      <option value="startups">Startups</option>
+     <div style="display: flex; flex-direction: column;">
+      <label for="subheading" style="font-size: 18px;">Subheading</label>
+      <input type="text" id="subheading" name="subheading" style="border: 1px solid black; border-radius: 5px; padding: 8px;"><br><br>
+    </div>
+
+    <label for="category" style="font-size: 18px;">Category</label>
+    <select id="category" name="category" required style="padding: 5px;font-size: 15px;">
+      <option value="" style="font-size: 15px;">Select a Category</option>
+      <option value="marketing" style="font-size: 15px;">Marketing</option>
+      <option value="advertising" style="font-size: 15px;">Advertising</option>
+      <option value="market trends" style="font-size: 15px;">Market Trends</option>
+      <option value="tech moves" style="font-size: 15px;">Tech Moves</option>
+      <option value="startups" style="font-size: 15px;">Startups</option>
     </select><br><br>
 
-    <label for="subheading">Subheading</label>
-    <input type="text" id="subheading" name="subheading"><br><br>
 
-    <label for="imagePost">Image Post</label>
+    <label for="imagePost" style="font-size: 18px;">Image Post</label>
     <input type="file" id="imagePost" name="imagePost"><br><br>
 
-    <label for="createdBy">Created By</label>
-    <input type="text" id="createdBy" name="createdBy" required><br><br>
+    <div style="display: flex; flex-direction: column; width: 30%;">
+      <label for="createdBy" style="font-size: 18px;">Created By</label>
+      <input type="text" id="createdBy" name="createdBy" required style="border: 1px solid black; border-radius: 5px; padding: 8px;"><br><br>
+    </div>
 
-    <label for="designation">Designation</label>
-    <input type="text" id="designation" name="designation" required><br><br>
+    <div style="display: flex; flex-direction: column; width: 30%;">
+      <label for="designation" style="font-size: 18px;">Designation</label>
+      <input type="text" id="designation" name="designation" required style="border: 1px solid black; border-radius: 5px; padding: 8px;"><br><br>
+    </div>
 
-    <label for="description">Post Description</label>
-    <textarea id="description" name="description" rows="4" required></textarea><br><br>
+    <div style="display: flex; flex-direction: column;">
+      <label for="description" style="font-size: 18px;">Post Description</label>
+      <textarea id="description" name="description" rows="4" required style="border: 1px solid black; border-radius: 5px; padding: 8px;"></textarea><br><br>
+    </div>
 
     <!-- Sponsored Section -->
-    <label for="isSponsored">Is Sponsored?</label>
-    <select id="isSponsored" name="isSponsored" onchange="toggleSponsoredSection()">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
+    <label for="isSponsored" style="font-size: 18px;">Is Sponsored?</label>
+    <select id="isSponsored" name="isSponsored" onchange="toggleSponsoredSection()" style="font-size: 15px;">
+      <option value="false" style="font-size: 15px;">No</option>
+      <option value="true" style="font-size: 15px;">Yes</option>
     </select><br><br>
 
     <div id="sponsoredSection" class="sponsored-section">
@@ -80,18 +91,22 @@
     <div id="contentSections">
       <!-- Initial Content Section -->
       <div class="content-section" id="contentSection1">
-        <label for="contentHeading1">Content Heading</label>
-        <input type="text" id="contentHeading1" name="contentHeading[]"><br><br>
+        <div style="display: flex; flex-direction: column;">
+          <label for="contentHeading1" style="font-size: 18px;">Content Heading</label>
+          <input type="text" id="contentHeading1" name="contentHeading[]" style="border: 1px solid black; border-radius: 5px; padding: 8px;"><br><br>
+        </div>
 
-        <label for="contentDescription1">Content Description</label>
-        <textarea id="contentDescription1" name="contentDescription[]"></textarea><br><br>
+        <div style="display: flex; flex-direction: column;">
+          <label for="contentDescription1" style="font-size: 18px;">Content Description</label>
+          <textarea id="contentDescription1" name="contentDescription[]" rows="4" style="border: 1px solid black; border-radius: 5px; padding: 8px;"></textarea><br><br>
+        </div>
 
-        <label for="contentType1">Content Type</label>
-        <select id="contentType1" name="contentType[]" onchange="toggleContentTypeFields(this)">
-          <option value="">Select Content Type</option>
-          <option value="image">Image</option>
-          <option value="list">List</option>
-          <option value="quote">Quote</option>
+        <label for="contentType1" style="font-size: 18px;">Content Type</label>
+        <select id="contentType1" name="contentType[]" onchange="toggleContentTypeFields(this)" style="font-size: 15px;">
+          <option value="" style="font-size: 15px;">Select Content Type</option>
+          <option value="image" style="font-size: 15px;">Image</option>
+          <option value="list" style="font-size: 15px;">List</option>
+          <option value="quote" style="font-size: 15px;">Quote</option>
         </select><br><br>
 
         <div class="image-option" id="imageOption1" style="display:none;">
@@ -119,8 +134,8 @@
       </div>
     </div>
 
-    <button type="button" onclick="addContentSection()">Add New Content Section</button><br><br>
-    <button type="submit">Submit</button>
+    <button type="button" onclick="addContentSection()" style="border: 1px solid gray; background-color: transparent;">Add New Content Section</button><br><br>
+    <button type="submit" style="padding: 5px 50px; background-color: #C2FF74; border: none; justify-self:right; font-weight: 600;">Submit</button>
   </form>
 
   <script>
@@ -160,18 +175,22 @@
       newSection.id = `contentSection${contentSectionCount}`;
       newSection.innerHTML = `
         <!-- Dynamic content code -->
-        <label for="contentHeading${contentSectionCount}">Content Heading</label>
-        <input type="text" id="contentHeading${contentSectionCount}" name="contentHeading[]"><br><br>
+        <div style="display: flex; flex-direction: column;">
+        <label for="contentHeading${contentSectionCount}" style="font-size: 18px;">Content Heading</label>
+        <input type="text" id="contentHeading${contentSectionCount}" name="contentHeading[]" style="border: 1px solid black; border-radius: 5px; padding: 8px;"><br><br>
+        </div>
 
-        <label for="contentDescription${contentSectionCount}">Content Description</label>
-        <textarea id="contentDescription${contentSectionCount}" name="contentDescription[]"></textarea><br><br>
+        <div style="display: flex; flex-direction: column;">
+        <label for="contentDescription${contentSectionCount}" style="font-size: 18px;">Content Description</label>
+        <textarea id="contentDescription${contentSectionCount}" name="contentDescription[]" rows="4" style="border: 1px solid black; border-radius: 5px; padding: 8px;"></textarea><br><br>
+        </div>
 
-        <label for="contentType${contentSectionCount}">Content Type</label>
-        <select id="contentType${contentSectionCount}" name="contentType[]" onchange="toggleContentTypeFields(this)">
-          <option value="">Select Content Type</option>
-          <option value="image">Image</option>
-          <option value="list">List</option>
-          <option value="quote">Quote</option>
+        <label for="contentType${contentSectionCount}" style="font-size: 18px;">Content Type</label>
+        <select id="contentType${contentSectionCount}" name="contentType[]" onchange="toggleContentTypeFields(this)" style="font-size: 15px;">
+          <option value="" style="font-size: 15px;">Select Content Type</option>
+          <option value="image" style="font-size: 15px;">Image</option>
+          <option value="list" style="font-size: 15px;">List</option>
+          <option value="quote" style="font-size: 15px;">Quote</option>
         </select><br><br>
 
         <div class="image-option" id="imageOption${contentSectionCount}" style="display:none;">

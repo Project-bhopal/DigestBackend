@@ -1,17 +1,18 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const generateToken = require("../utils/generateToken");
 
 const createUser = async (req, res) => {
-  const { name, mobile, password } = req.body;
+  const { email, password } = req.body;
 
-  // Validate input
-  if (!name || !mobile || !password) {
+  // // Validate input
+  if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
     // Check if user already exists
-    const existingUser = await User.findOne({ mobile });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -21,8 +22,7 @@ const createUser = async (req, res) => {
 
     // Create new user
     const user = new User({
-      name,
-      mobile,
+      email,
       password: hashedPassword,
     });
 
@@ -36,31 +36,23 @@ const createUser = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  const { mobile, password } = req.body;
-
-  if (!mobile || !password) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
+const loginUser = async (req, res) => {
   try {
-    // Check if user exists
-    const existingUser = await User.findOne({ mobile });
-    if (!existingUser) {
-      return res.status(404).json({ message: "User does not exists" });
-    }
-    const options = {
-      httpOnly: true,
-      secure: true,
-    };
+    const { email, password } = req.body;
 
-    res.status(200)
-    .cookie("isAdmin", true, options)
-    .json({ message: "Login Successfull" });
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    res.status(200).json({ token: generateToken(user._id) });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-module.exports = { createUser, login };
+module.exports = { createUser, loginUser };

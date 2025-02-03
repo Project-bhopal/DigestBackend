@@ -35,6 +35,26 @@ exports.getPostById = async (req, res) => {
     });
   }
 };
+exports.deletePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId)
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    const deletedPost = await Post.findByIdAndDelete(postId);
+
+    res.status(200).json({
+      message: 'Post Deleted successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error',
+      error: err.message,
+    });
+  }
+};
 
 // Update post
 exports.updatePost = async (req, res) => {
@@ -134,9 +154,9 @@ exports.createPost = async (req, res) => {
         })),
       }
     };
-    res.status(201).json(response);
+    res.status(201).redirect("http://localhost:3000/dashboard");
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server Error', error: err.message });
+    res.status(500).json({ message: 'Server Error', error: err.message});
   }
 };

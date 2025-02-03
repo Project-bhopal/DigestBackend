@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path'); // Import path module
 const fs = require('fs'); // Import fs module to check/create directories
 const postController = require('../controllers/postController');
+const authenticateToken = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -49,13 +50,16 @@ const dynamicUpload = (req, res, next) => {
 router.post(
   '/create',
   dynamicUpload,
+  // authenticateToken,
   postController.createPost // Ensure the controller uses the full path for image URLs
 );
 
 router.get('/allpost', postController.getAllPosts);
 router.get('/allpost/:id', postController.getPostById);
+router.delete('/deletePost/?id', authenticateToken, postController.deletePost)
 router.put(
   '/update/:id',
+  authenticateToken,
   upload.fields([
     { name: 'imagePost', maxCount: 1 },
     { name: 'imageUpload', maxCount: 10 },

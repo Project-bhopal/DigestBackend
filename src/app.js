@@ -45,7 +45,8 @@ connectDB(); // Connect to MongoDB
 // Use routes
 // Render the form page when visiting the root route
 app.get('/', (req, res) => {
-  res.render('createPost'); // Will render the createPost.ejs file
+  const token = req.params.token
+  res.render('createPost', {token}); // Will render the createPost.ejs file
 });
 
 app.use('/api/users', userRoutes);
